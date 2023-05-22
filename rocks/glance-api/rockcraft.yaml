@@ -31,7 +31,7 @@ parts:
     overlay-script: |
       groupadd --root $CRAFT_OVERLAY --gid 42415 --system glance
       useradd \
-        --gid glance \
+        --gid 42415 \
         --uid 42415 \
         --no-create-home \
         --home /var/lib/glance \
