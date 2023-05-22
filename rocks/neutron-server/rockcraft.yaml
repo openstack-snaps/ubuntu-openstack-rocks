@@ -1,8 +1,8 @@
-name: {{ cookiecutter.rock_name }}
-summary: Openstack {{ cookiecutter.rock_name }}
+name: neutron-server
+summary: Openstack neutron-server
 license: Apache-2.0
 description: |
-  Ubuntu distribution of OpenStack {{ cookiecutter.rock_name }}
+  Ubuntu distribution of OpenStack neutron-server
 version: antelope
 
 base: ubuntu:22.04
@@ -17,27 +17,27 @@ platforms:
 #     priority: always
 
 services:
-  wsgi-{{ cookiecutter.rock_name }}:
+  wsgi-neutron-server:
     override: replace
     command: apachectl -D FOREGROUND
 
 parts:
-  {{ cookiecutter.username }}-user:
+  neutron-user:
     plugin: nil
-    # {{ cookiecutter.uid }}:{{ cookiecutter.uid }} for kolla compatibility
+    # 42435:42435 for kolla compatibility
     overlay-script: |
-      groupadd --root $CRAFT_OVERLAY --gid {{ cookiecutter.uid }} --system {{ cookiecutter.username }}
+      groupadd --root $CRAFT_OVERLAY --gid 42435 --system neutron
       useradd \
-        --gid {{ cookiecutter.username }} \
-        --uid {{ cookiecutter.uid }} \
+        --gid neutron \
+        --uid 42435 \
         --no-create-home \
-        --home /var/lib/{{ cookiecutter.username }} \
+        --home /var/lib/neutron \
         --root $CRAFT_OVERLAY \
         --system \
         --shell /bin/false \
 
-  {{ cookiecutter.rock_name }}:
-    after: [{{ cookiecutter.username }}-user]
+  neutron-server:
+    after: [neutron-user]
     plugin: nil
     overlay-packages:
       - software-properties-common
@@ -48,7 +48,7 @@ parts:
       mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
       chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
       chroot $CRAFT_OVERLAY apt update
-      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install {{ cookiecutter.packages }} --yes"
+      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo python3-ironic-neutron-agent python3-neutron-dynamic-routing python3-neutron-vpnaas iproute2 iputils-ping keepalived net-tools radvd neutron-plugin-ml2 neutron-server openvswitch-switch python3-networking-sfc python3-openvswitch python3-oslo.vmware --yes"
       umount --recursive $CRAFT_OVERLAY/dev
       umount $CRAFT_OVERLAY/sys
       umount $CRAFT_OVERLAY/proc
