@@ -28,7 +28,7 @@ parts:
     overlay-script: |
       groupadd --root $CRAFT_OVERLAY --gid 42425 --system keystone
       useradd \
-        --gid keystone \
+        --gid 42425 \
         --uid 42425 \
         --no-create-home \
         --home /var/lib/keystone \
