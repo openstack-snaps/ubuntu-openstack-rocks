@@ -1,0 +1,40 @@
+name: cinder-volume
+summary: Openstack cinder-volume
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack cinder-volume
+version: antelope
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+# Disabled until rockcraft supports 
+# overlay packages from repositories
+# package-repositories:
+#   - type: apt
+#     cloud: antelope
+#     priority: always
+
+services:
+  cinder-volume:
+    override: replace
+    command: cinder-volume --use-syslog
+
+parts:
+  cinder-volume:
+    plugin: nil
+    overlay-packages:
+      - software-properties-common
+    overlay-script: |
+      mount /etc/resolv.conf $CRAFT_OVERLAY/etc/resolv.conf --bind
+      mount proc $CRAFT_OVERLAY/proc -t proc
+      mount sysfs $CRAFT_OVERLAY/sys -t sysfs
+      mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
+      chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
+      chroot $CRAFT_OVERLAY apt update
+      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo lsscsi multipath-tools nfs-common nvme-cli sysfsutils targetcli-fb thin-provisioning-tools tgt cinder-volume python3-rtslib-fb --yes"
+      umount --recursive $CRAFT_OVERLAY/dev
+      umount $CRAFT_OVERLAY/sys
+      umount $CRAFT_OVERLAY/proc
+      umount $CRAFT_OVERLAY/etc/resolv.conf
