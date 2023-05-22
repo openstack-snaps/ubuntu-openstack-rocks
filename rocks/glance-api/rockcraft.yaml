@@ -25,7 +25,23 @@ services:
     command: /usr/sbin/apache2ctl -DFOREGROUND
 
 parts:
+  glance-user:
+    plugin: nil
+    # 42415:42415 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42415 --system glance
+      useradd \
+        --gid glance \
+        --uid 42415 \
+        --no-create-home \
+        --home /var/lib/glance \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        glance
+
   glance-api:
+    after: [glance-user]
     plugin: nil
     overlay-packages:
       - software-properties-common
