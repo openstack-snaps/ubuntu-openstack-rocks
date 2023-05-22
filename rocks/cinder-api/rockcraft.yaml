@@ -28,7 +28,7 @@ parts:
     overlay-script: |
       groupadd --root $CRAFT_OVERLAY --gid 42407 --system cinder
       useradd \
-        --gid cinder \
+        --gid 42407 \
         --uid 42407 \
         --no-create-home \
         --home /var/lib/cinder \
