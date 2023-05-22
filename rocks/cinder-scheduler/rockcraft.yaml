@@ -22,7 +22,23 @@ services:
     command: cinder-scheduler --use-syslog
 
 parts:
+  cinder-user:
+    plugin: nil
+    # 42407:42407 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42407 --system cinder
+      useradd \
+        --gid cinder \
+        --uid 42407 \
+        --no-create-home \
+        --home /var/lib/cinder \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        cinder
+
   cinder-scheduler:
+    after: [cinder-user]
     plugin: nil
     overlay-packages:
       - software-properties-common
