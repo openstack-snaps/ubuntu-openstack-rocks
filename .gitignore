@@ -1,7 +1,7 @@
 venv/
 build/
 .idea/
-*.charm
+*.rock
 .tox
 venv
 .coverage

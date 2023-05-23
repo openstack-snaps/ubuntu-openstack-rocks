@@ -1,0 +1,41 @@
+name: Publish
+
+on:
+  workflow_call:
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log in to the Container registry
+        uses: docker/login-action@40891eba8c2bcd1309b07ba8b11232f313e86779
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install skopeo
+        run: |
+          sudo snap install --devmode --channel edge skopeo
+      - name: Install yq
+        run: |
+          sudo snap install yq
+      - uses: actions/download-artifact@v3
+        with:
+          name: rock
+      - name: Import and push to github package
+        run: |
+          rock_files=$(ls *.rock)
+          for rock_file in $rock_files; do
+              rockname=$(echo $rock_file | cut -d"_" -f1)
+              image_name="$(yq '.name' rocks/$rockname/rockcraft.yaml)"
+              version="$(yq '.version' rocks/$rockname/rockcraft.yaml)"
+              sudo skopeo \
+                --insecure-policy \
+                copy \
+                oci-archive:"${rock_file}" \
+                docker-daemon:"ghcr.io/openstack-charmers/${image_name}:${version}"
+              echo "Publishing rock ${image_name}:${version}"
+              docker push ghcr.io/openstack-charmers/${image_name}:${version}
+          done
