@@ -49,7 +49,7 @@ parts:
       mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
       chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
       chroot $CRAFT_OVERLAY apt update
-      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo cinder-api  apache2 libapache2-mod-wsgi-py3 openssl --yes"
+      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo cinder-api --yes"
       umount --recursive $CRAFT_OVERLAY/dev
       umount $CRAFT_OVERLAY/sys
       umount $CRAFT_OVERLAY/proc
