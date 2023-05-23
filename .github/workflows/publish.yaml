@@ -31,9 +31,6 @@ jobs:
               rockname=$(echo $rock_file | cut -d"_" -f1)
               image_name="$(yq '.name' rocks/$rockname/rockcraft.yaml)"
               version="$(yq '.version' rocks/$rockname/rockcraft.yaml)"
-              echo $rockname
-              echo $image_name
-              echo $version
               sudo skopeo \
                 --insecure-policy \
                 copy \

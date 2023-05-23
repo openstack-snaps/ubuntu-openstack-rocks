@@ -28,8 +28,7 @@ jobs:
               [[ ! -z "$component" ]] && components+=($component)
           done
           modified_rocks=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${components[@]}")
-          echo "Modified rocks:"
-          echo $modified_rocks
+          echo "Modified rocks: $modified_rocks"
           echo "rocks=$modified_rocks" >> $GITHUB_OUTPUT
   build:
     needs: modifiedrocks
