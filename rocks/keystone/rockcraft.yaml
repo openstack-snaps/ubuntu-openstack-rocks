@@ -22,7 +22,22 @@ services:
     command: apachectl -D FOREGROUND
 
 parts:
+  keystone-user:
+    plugin: nil
+    # 42425:42425 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42425 --system keystone
+      useradd \
+        --gid 42425 \
+        --uid 42425 \
+        --no-create-home \
+        --home /var/lib/keystone \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        keystone
   keystone:
+    after: [keystone-user]
     plugin: nil
     overlay-packages:
       - software-properties-common
