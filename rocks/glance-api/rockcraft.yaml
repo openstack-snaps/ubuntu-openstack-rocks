@@ -1,0 +1,59 @@
+name: glance-api
+summary: Openstack glance-api
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack glance-api
+version: antelope
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+# Disabled until rockcraft supports 
+# overlay packages from repositories
+# package-repositories:
+#   - type: apt
+#     cloud: antelope
+#     priority: always
+
+services:
+  glance-api:
+    override: replace
+    command: /usr/bin/glance-api --config-file /etc/glance/glance-api.conf
+  "apache forwarder":
+    override: replace
+    command: /usr/sbin/apache2ctl -DFOREGROUND
+
+parts:
+  glance-user:
+    plugin: nil
+    # 42415:42415 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42415 --system glance
+      useradd \
+        --gid 42415 \
+        --uid 42415 \
+        --no-create-home \
+        --home /var/lib/glance \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        glance
+
+  glance-api:
+    after: [glance-user]
+    plugin: nil
+    overlay-packages:
+      - software-properties-common
+    overlay-script: |
+      mount /etc/resolv.conf $CRAFT_OVERLAY/etc/resolv.conf --bind
+      mount proc $CRAFT_OVERLAY/proc -t proc
+      mount sysfs $CRAFT_OVERLAY/sys -t sysfs
+      mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
+      chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
+      chroot $CRAFT_OVERLAY apt update
+      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo nfs-common glance python3-boto3 python3-rados python3-rbd apache2 libapache2-mod-wsgi-py3 --yes"
+      umount --recursive $CRAFT_OVERLAY/dev
+      umount $CRAFT_OVERLAY/sys
+      umount $CRAFT_OVERLAY/proc
+      umount $CRAFT_OVERLAY/etc/resolv.conf
