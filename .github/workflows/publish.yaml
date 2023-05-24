@@ -35,7 +35,7 @@ jobs:
                 --insecure-policy \
                 copy \
                 oci-archive:"${rock_file}" \
-                docker-daemon:"ghcr.io/openstack-charmers/${image_name}:${version}"
+                docker-daemon:"ghcr.io/openstack-snaps/${image_name}:${version}"
               echo "Publishing rock ${image_name}:${version}"
               docker push ghcr.io/openstack-snaps/${image_name}:${version}
           done
