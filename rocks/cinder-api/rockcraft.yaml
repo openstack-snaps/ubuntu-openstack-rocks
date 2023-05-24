@@ -3,7 +3,7 @@ summary: Openstack cinder-api
 license: Apache-2.0
 description: |
   Ubuntu distribution of OpenStack cinder-api
-version: antelope
+version: 2023.1
 
 base: ubuntu:22.04
 platforms:
@@ -50,6 +50,7 @@ parts:
       chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
       chroot $CRAFT_OVERLAY apt update
       chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo cinder-api --yes"
+      chroot $CRAFT_OVERLAY bash -c echo > etc/apache2/ports.conf
       umount --recursive $CRAFT_OVERLAY/dev
       umount $CRAFT_OVERLAY/sys
       umount $CRAFT_OVERLAY/proc

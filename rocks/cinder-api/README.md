@@ -17,7 +17,7 @@ it will help ensure that all layers of the image are imported
 into docker (this is just the top layer).
 
 ```bash
-> skopeo --insecure-policy copy oci-archive:cinder-api_antelope_amd64.rock docker-daemon:cinder-api:antelope
+> skopeo --insecure-policy copy oci-archive:cinder-api_2023.1_amd64.rock docker-daemon:cinder-api:2023.1
 ```
 
 If you are interested in giving it a go in Microk8s, you can
@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save cinder-api:antelope > ./cinder-api_antelope.tar
-> microk8s ctr image import ./cinder-api_antelope.tar
+> docker save cinder-api:2023.1 > ./cinder-api_amd64.tar
+> microk8s ctr image import ./cinder-api_amd64.tar
 # Try with sunbeam
-> juju attach-resource cinder-api cinder-api-image=cinder-api:antelope
+> juju attach-resource cinder-api cinder-api-image=cinder-api:2023.1
 ```

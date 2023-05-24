@@ -17,7 +17,7 @@ it will help ensure that all layers of the image are imported
 into docker (this is just the top layer).
 
 ```bash
-> skopeo --insecure-policy copy oci-archive:nova-conductor_antelope_amd64.rock docker-daemon:nova-conductor:antelope
+> skopeo --insecure-policy copy oci-archive:nova-conductor_2023.1_amd64.rock docker-daemon:nova-conductor:2023.1
 ```
 
 If you are interested in giving it a go in Microk8s, you can
@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save nova-conductor:antelope > ./nova-conductor_antelope.tar
-> microk8s ctr image import ./nova-conductor_antelope.tar
+> docker save nova-conductor:2023.1 > ./nova-conductor_amd64.tar
+> microk8s ctr image import ./nova-conductor_amd64.tar
 # Try with sunbeam
-> juju attach-resource nova-conductor nova-conductor-image=nova-conductor:antelope
+> juju attach-resource nova-conductor nova-conductor-image=nova-conductor:2023.1
 ```
