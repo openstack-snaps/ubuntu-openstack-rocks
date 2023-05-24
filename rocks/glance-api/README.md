@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save glance-api:2023.1 > ./glance-api_amd64.tar
-> microk8s ctr image import ./glance-api_amd64.tar
+> docker save glance-api:2023.1 > ./glance-api_2023.1.tar
+> microk8s ctr image import ./glance-api_2023.1.tar
 # Try with sunbeam
 > juju attach-resource glance-api glance-api-image=glance-api:2023.1
 ```

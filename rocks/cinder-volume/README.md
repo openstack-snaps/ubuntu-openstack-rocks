@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save cinder-volume:2023.1 > ./cinder-volume_amd64.tar
-> microk8s ctr image import ./cinder-volume_amd64.tar
+> docker save cinder-volume:2023.1 > ./cinder-volume_2023.1.tar
+> microk8s ctr image import ./cinder-volume_2023.1.tar
 # Try with sunbeam
 > juju attach-resource cinder-volume cinder-volume-image=cinder-volume:2023.1
 ```

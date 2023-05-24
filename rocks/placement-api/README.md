@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save placement-api:2023.1 > ./placement-api_amd64.tar
-> microk8s ctr image import ./placement-api_amd64.tar
+> docker save placement-api:2023.1 > ./placement-api_2023.1.tar
+> microk8s ctr image import ./placement-api_2023.1.tar
 # Try with sunbeam
 > juju attach-resource placement-api placement-api-image=placement-api:2023.1
 ```

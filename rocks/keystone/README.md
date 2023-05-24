@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save keystone:2023.1 > ./keystone_amd64.tar
-> microk8s ctr image import ./keystone_amd64.tar
+> docker save keystone:2023.1 > ./keystone_2023.1.tar
+> microk8s ctr image import ./keystone_2023.1.tar
 # Try with sunbeam
 > juju attach-resource keystone keystone-image=keystone:2023.1
 ```

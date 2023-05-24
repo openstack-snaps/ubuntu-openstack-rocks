@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save nova-api:2023.1 > ./nova-api_amd64.tar
-> microk8s ctr image import ./nova-api_amd64.tar
+> docker save nova-api:2023.1 > ./nova-api_2023.1.tar
+> microk8s ctr image import ./nova-api_2023.1.tar
 # Try with sunbeam
 > juju attach-resource nova-api nova-api-image=nova-api:2023.1
 ```

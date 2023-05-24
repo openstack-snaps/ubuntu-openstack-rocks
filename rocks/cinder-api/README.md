@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save cinder-api:2023.1 > ./cinder-api_amd64.tar
-> microk8s ctr image import ./cinder-api_amd64.tar
+> docker save cinder-api:2023.1 > ./cinder-api_2023.1.tar
+> microk8s ctr image import ./cinder-api_2023.1.tar
 # Try with sunbeam
 > juju attach-resource cinder-api cinder-api-image=cinder-api:2023.1
 ```

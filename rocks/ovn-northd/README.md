@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save ovn-northd:2023.1 > ./ovn-northd_amd64.tar
-> microk8s ctr image import ./ovn-northd_amd64.tar
+> docker save ovn-northd:2023.1 > ./ovn-northd_2023.1.tar
+> microk8s ctr image import ./ovn-northd_2023.1.tar
 # Try with sunbeam
 > juju attach-resource ovn-northd ovn-northd-image=ovn-northd:2023.1
 ```

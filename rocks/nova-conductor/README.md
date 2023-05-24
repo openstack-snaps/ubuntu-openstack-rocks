@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save nova-conductor:2023.1 > ./nova-conductor_amd64.tar
-> microk8s ctr image import ./nova-conductor_amd64.tar
+> docker save nova-conductor:2023.1 > ./nova-conductor_2023.1.tar
+> microk8s ctr image import ./nova-conductor_2023.1.tar
 # Try with sunbeam
 > juju attach-resource nova-conductor nova-conductor-image=nova-conductor:2023.1
 ```

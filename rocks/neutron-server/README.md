@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save neutron-server:2023.1 > ./neutron-server_amd64.tar
-> microk8s ctr image import ./neutron-server_amd64.tar
+> docker save neutron-server:2023.1 > ./neutron-server_2023.1.tar
+> microk8s ctr image import ./neutron-server_2023.1.tar
 # Try with sunbeam
 > juju attach-resource neutron-server neutron-server-image=neutron-server:2023.1
 ```

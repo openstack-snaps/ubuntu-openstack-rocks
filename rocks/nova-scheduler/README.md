@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save nova-scheduler:2023.1 > ./nova-scheduler_amd64.tar
-> microk8s ctr image import ./nova-scheduler_amd64.tar
+> docker save nova-scheduler:2023.1 > ./nova-scheduler_2023.1.tar
+> microk8s ctr image import ./nova-scheduler_2023.1.tar
 # Try with sunbeam
 > juju attach-resource nova-scheduler nova-scheduler-image=nova-scheduler:2023.1
 ```

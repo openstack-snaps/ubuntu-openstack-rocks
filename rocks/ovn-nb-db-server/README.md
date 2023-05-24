@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save ovn-nb-db-server:2023.1 > ./ovn-nb-db-server_amd64.tar
-> microk8s ctr image import ./ovn-nb-db-server_amd64.tar
+> docker save ovn-nb-db-server:2023.1 > ./ovn-nb-db-server_2023.1.tar
+> microk8s ctr image import ./ovn-nb-db-server_2023.1.tar
 # Try with sunbeam
 > juju attach-resource ovn-nb-db-server ovn-nb-db-server-image=ovn-nb-db-server:2023.1
 ```

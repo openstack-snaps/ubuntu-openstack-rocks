@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save cinder-scheduler:2023.1 > ./cinder-scheduler_amd64.tar
-> microk8s ctr image import ./cinder-scheduler_amd64.tar
+> docker save cinder-scheduler:2023.1 > ./cinder-scheduler_2023.1.tar
+> microk8s ctr image import ./cinder-scheduler_2023.1.tar
 # Try with sunbeam
 > juju attach-resource cinder-scheduler cinder-scheduler-image=cinder-scheduler:2023.1
 ```
