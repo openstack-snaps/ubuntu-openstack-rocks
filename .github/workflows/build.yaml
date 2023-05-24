@@ -32,6 +32,7 @@ jobs:
           echo "rocks=$modified_rocks" >> $GITHUB_OUTPUT
   build:
     needs: modifiedrocks
+    if: ${{ needs.modifiedrocks.outputs.rocks != '[]' }}
     strategy:
       matrix:
         rock: ${{ fromJson(needs.modifiedrocks.outputs.rocks) }}
