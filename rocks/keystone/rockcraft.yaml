@@ -36,6 +36,7 @@ parts:
         --system \
         --shell /bin/false \
         keystone
+
   keystone:
     after: [keystone-user]
     plugin: nil
