@@ -3,7 +3,7 @@ summary: Openstack neutron-server
 license: Apache-2.0
 description: |
   Ubuntu distribution of OpenStack neutron-server
-version: antelope
+version: 2023.1
 
 base: ubuntu:22.04
 platforms:

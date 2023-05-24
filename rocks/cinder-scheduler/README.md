@@ -17,7 +17,7 @@ it will help ensure that all layers of the image are imported
 into docker (this is just the top layer).
 
 ```bash
-> skopeo --insecure-policy copy oci-archive:cinder-scheduler_antelope_amd64.rock docker-daemon:cinder-scheduler:antelope
+> skopeo --insecure-policy copy oci-archive:cinder-scheduler_2023.1_amd64.rock docker-daemon:cinder-scheduler:2023.1
 ```
 
 If you are interested in giving it a go in Microk8s, you can
@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save cinder-scheduler:antelope > ./cinder-scheduler_antelope.tar
-> microk8s ctr image import ./cinder-scheduler_antelope.tar
+> docker save cinder-scheduler:2023.1 > ./cinder-scheduler_2023.1.tar
+> microk8s ctr image import ./cinder-scheduler_2023.1.tar
 # Try with sunbeam
-> juju attach-resource cinder-scheduler cinder-scheduler-image=cinder-scheduler:antelope
+> juju attach-resource cinder-scheduler cinder-scheduler-image=cinder-scheduler:2023.1
 ```

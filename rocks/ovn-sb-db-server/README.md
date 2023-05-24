@@ -17,7 +17,7 @@ it will help ensure that all layers of the image are imported
 into docker (this is just the top layer).
 
 ```bash
-> skopeo --insecure-policy copy oci-archive:ovn-sb-db-server_antelope_amd64.rock docker-daemon:ovn-sb-db-server:antelope
+> skopeo --insecure-policy copy oci-archive:ovn-sb-db-server_2023.1_amd64.rock docker-daemon:ovn-sb-db-server:2023.1
 ```
 
 If you are interested in giving it a go in Microk8s, you can
@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save ovn-sb-db-server:antelope > ./ovn-sb-db-server_antelope.tar
-> microk8s ctr image import ./ovn-sb-db-server_antelope.tar
+> docker save ovn-sb-db-server:2023.1 > ./ovn-sb-db-server_2023.1.tar
+> microk8s ctr image import ./ovn-sb-db-server_2023.1.tar
 # Try with sunbeam
-> juju attach-resource ovn-sb-db-server ovn-sb-db-server-image=ovn-sb-db-server:antelope
+> juju attach-resource ovn-sb-db-server ovn-sb-db-server-image=ovn-sb-db-server:2023.1
 ```

@@ -3,7 +3,7 @@ summary: Openstack nova-scheduler
 license: Apache-2.0
 description: |
   Ubuntu distribution of OpenStack nova-scheduler
-version: antelope
+version: 2023.1
 
 base: ubuntu:22.04
 platforms:
