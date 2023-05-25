@@ -10,28 +10,49 @@ platforms:
 services:
   rabbitmq:
     override: replace
-    startup: enabled
+    startup: disabled
     summary: RabbitMQ message broker
     command: rabbitmq-server
     user: rabbitmq
     group: rabbitmq
     requires:
       - epmd
+    environment:
+      TZ: UTC
   epmd:
     override: replace
-    startup: enabled
+    startup: disabled
     summary: Erlang EPM service
     command: epmd
     user: rabbitmq
     group: rabbitmq
+    environment:
+      TZ: UTC
 
 parts:
+  rabbitmq-user:
+    plugin: nil
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 999 --system rabbitmq
+      useradd \
+        --gid 999 \
+        --uid 999 \
+        --no-create-home \
+        --home /var/lib/rabbitmq \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        rabbitmq
+
   rabbitmq:
+    after: [rabbitmq-user]
     plugin: nil
     overlay-packages:
       - rabbitmq-server
-    override-prime: |
-      craftctl default
-      # Enable Management Plugin by default
-      mkdir -p $CRAFT_PRIME/etc/rabbitmq
-      echo "[rabbitmq_management]." > $CRAFT_PRIME/etc/rabbitmq/enabled_plugins
+
+  rabbitmq-config:
+    after: [rabbitmq]
+    plugin: dump
+    source: ./etc
+    organize:
+      'rabbitmq/*':  etc/rabbitmq/
