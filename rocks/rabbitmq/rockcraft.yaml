@@ -1,0 +1,58 @@
+name: rabbitmq
+summary: RabbitMQ
+description: AMQP based message broker.
+version: 3.9.13
+base: ubuntu:22.04
+license: Apache-2.0
+platforms:
+  amd64:
+
+services:
+  rabbitmq:
+    override: replace
+    startup: disabled
+    summary: RabbitMQ message broker
+    command: rabbitmq-server
+    user: rabbitmq
+    group: rabbitmq
+    requires:
+      - epmd
+    environment:
+      TZ: UTC
+  epmd:
+    override: replace
+    startup: disabled
+    summary: Erlang EPM service
+    command: epmd
+    user: rabbitmq
+    group: rabbitmq
+    environment:
+      TZ: UTC
+
+parts:
+  rabbitmq-user:
+    plugin: nil
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 999 --system rabbitmq
+      useradd \
+        --gid 999 \
+        --uid 999 \
+        --no-create-home \
+        --home /var/lib/rabbitmq \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        rabbitmq
+
+  rabbitmq:
+    after: [rabbitmq-user]
+    plugin: nil
+    overlay-packages:
+      - rabbitmq-server
+
+  rabbitmq-config:
+    after: [rabbitmq]
+    plugin: dump
+    source: ./etc
+    organize:
+      'rabbitmq/*':  etc/rabbitmq/
