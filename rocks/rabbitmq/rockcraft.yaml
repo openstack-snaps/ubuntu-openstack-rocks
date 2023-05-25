@@ -1,0 +1,37 @@
+name: rabbitmq
+summary: RabbitMQ
+description: AMQP based message broker.
+version: 3.9.13
+base: ubuntu:22.04
+license: Apache-2.0
+platforms:
+  amd64:
+
+services:
+  rabbitmq:
+    override: replace
+    startup: enabled
+    summary: RabbitMQ message broker
+    command: rabbitmq-server
+    user: rabbitmq
+    group: rabbitmq
+    requires:
+      - epmd
+  epmd:
+    override: replace
+    startup: enabled
+    summary: Erlang EPM service
+    command: epmd
+    user: rabbitmq
+    group: rabbitmq
+
+parts:
+  rabbitmq:
+    plugin: nil
+    overlay-packages:
+      - rabbitmq-server
+    override-prime: |
+      craftctl default
+      # Enable Management Plugin by default
+      mkdir -p $CRAFT_PRIME/etc/rabbitmq
+      echo "[rabbitmq_management]." > $CRAFT_PRIME/etc/rabbitmq/enabled_plugins
