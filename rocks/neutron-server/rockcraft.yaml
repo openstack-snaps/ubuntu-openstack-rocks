@@ -9,7 +9,7 @@ base: ubuntu:22.04
 platforms:
   amd64:
 
-# Disabled until rockcraft supports 
+# Disabled until rockcraft supports
 # overlay packages from repositories
 # package-repositories:
 #   - type: apt
@@ -19,7 +19,9 @@ platforms:
 services:
   neutron-server:
     override: replace
-    command: neutron-server
+    user: neutron
+    group: neutron
+    command: neutron-server --use-syslog
 
 parts:
   neutron-user:

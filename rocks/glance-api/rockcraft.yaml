@@ -9,7 +9,7 @@ base: ubuntu:22.04
 platforms:
   amd64:
 
-# Disabled until rockcraft supports 
+# Disabled until rockcraft supports
 # overlay packages from repos
 # package-repositories:
 #   - type: apt
@@ -19,7 +19,9 @@ platforms:
 services:
   glance-api:
     override: replace
-    command: /usr/bin/glance-api --config-file /etc/glance/glance-api.conf
+    user: glance
+    group: glance
+    command: /usr/bin/glance-api --config-file /etc/glance/glance-api.conf --use-syslog
   "apache forwarder":
     override: replace
     command: /usr/sbin/apache2ctl -DFOREGROUND
