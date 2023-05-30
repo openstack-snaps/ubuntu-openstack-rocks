@@ -49,7 +49,7 @@ parts:
       mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
       chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
       chroot $CRAFT_OVERLAY apt update
-      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo openstack-dashboard --yes"
+      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo openstack-dashboard python3-mysqldb --yes"
       chroot $CRAFT_OVERLAY bash -c echo > etc/apache2/ports.conf
       umount --recursive $CRAFT_OVERLAY/dev
       umount $CRAFT_OVERLAY/sys
