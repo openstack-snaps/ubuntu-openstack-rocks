@@ -31,7 +31,7 @@ parts:
         --gid 42420 \
         --uid 42420 \
         --no-create-home \
-        --home /var/lib/horizon \
+        --home /var/lib/openstack-dashboard \
         --root $CRAFT_OVERLAY \
         --system \
         --shell /bin/false \
