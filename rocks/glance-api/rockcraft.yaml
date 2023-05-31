@@ -52,7 +52,7 @@ parts:
       mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
       chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
       chroot $CRAFT_OVERLAY apt update
-      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo nfs-common glance python3-boto3 python3-rados python3-rbd apache2 libapache2-mod-wsgi-py3 --yes"
+      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo ceph-common nfs-common glance python3-boto3 python3-rados python3-rbd apache2 libapache2-mod-wsgi-py3 --yes"
       chroot $CRAFT_OVERLAY bash -c echo > etc/apache2/ports.conf
       umount --recursive $CRAFT_OVERLAY/dev
       umount $CRAFT_OVERLAY/sys
