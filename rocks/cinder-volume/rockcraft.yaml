@@ -9,7 +9,7 @@ base: ubuntu:22.04
 platforms:
   amd64:
 
-# Disabled until rockcraft supports 
+# Disabled until rockcraft supports
 # overlay packages from repositories
 # package-repositories:
 #   - type: apt
@@ -19,6 +19,8 @@ platforms:
 services:
   cinder-volume:
     override: replace
+    user: cinder
+    group: cinder
     command: cinder-volume --use-syslog
 
 parts:
