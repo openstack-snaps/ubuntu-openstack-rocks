@@ -9,12 +9,10 @@ base: ubuntu:22.04
 platforms:
   amd64:
 
-# Disabled until rockcraft supports 
-# overlay packages from repos
-# package-repositories:
-#   - type: apt
-#     cloud: antelope
-#     priority: always
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
 
 services:
   glance-api:
@@ -44,17 +42,15 @@ parts:
     after: [glance-user]
     plugin: nil
     overlay-packages:
-      - software-properties-common
-    overlay-script: |
-      mount /etc/resolv.conf $CRAFT_OVERLAY/etc/resolv.conf --bind
-      mount proc $CRAFT_OVERLAY/proc -t proc
-      mount sysfs $CRAFT_OVERLAY/sys -t sysfs
-      mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
-      chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
-      chroot $CRAFT_OVERLAY apt update
-      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo ceph-common nfs-common glance python3-boto3 python3-rados python3-rbd apache2 libapache2-mod-wsgi-py3 --yes"
-      chroot $CRAFT_OVERLAY bash -c echo > etc/apache2/ports.conf
-      umount --recursive $CRAFT_OVERLAY/dev
-      umount $CRAFT_OVERLAY/sys
-      umount $CRAFT_OVERLAY/proc
-      umount $CRAFT_OVERLAY/etc/resolv.conf
+      - sudo
+      - ceph-common
+      - nfs-common
+      - glance
+      - python3-boto3
+      - python3-rados
+      - python3-rbd
+      - apache2
+      - libapache2-mod-wsgi-py3
+    override-prime: |
+      craftctl default
+      echo > $CRAFT_PRIME/etc/apache2/ports.conf

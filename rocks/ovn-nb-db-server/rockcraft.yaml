@@ -9,27 +9,17 @@ base: ubuntu:22.04
 platforms:
   amd64:
 
-# Disabled until rockcraft supports 
-# overlay packages from repositories
-# package-repositories:
-#   - type: apt
-#     cloud: antelope
-#     priority: always
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
 
 parts:
   ovn-nb-db-server:
     plugin: nil
     overlay-packages:
-      - software-properties-common
-    overlay-script: |
-      mount /etc/resolv.conf $CRAFT_OVERLAY/etc/resolv.conf --bind
-      mount proc $CRAFT_OVERLAY/proc -t proc
-      mount sysfs $CRAFT_OVERLAY/sys -t sysfs
-      mount /dev $CRAFT_OVERLAY/dev --rbind --make-private
-      chroot $CRAFT_OVERLAY add-apt-repository cloud-archive:antelope
-      chroot $CRAFT_OVERLAY apt update
-      chroot $CRAFT_OVERLAY bash -c "DEBIAN_FRONTEND=noninteractive apt install sudo ovn-central openvswitch-switch python3-openvswitch python3-netifaces --yes"
-      umount --recursive $CRAFT_OVERLAY/dev
-      umount $CRAFT_OVERLAY/sys
-      umount $CRAFT_OVERLAY/proc
-      umount $CRAFT_OVERLAY/etc/resolv.conf
+      - sudo
+      - ovn-central
+      - openvswitch-switch
+      - python3-openvswitch
+      - python3-netifaces
