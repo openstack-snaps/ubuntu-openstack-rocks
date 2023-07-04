@@ -1,0 +1,47 @@
+name: cinder-consolidated
+summary: Openstack consolidated
+license: Apache-2.0
+description: |
+  Ubuntu distribution of Cinder which can be used for all Cinder services
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+parts:
+  cinder-user:
+    plugin: nil
+    # 42407:42407 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42407 --system cinder
+      useradd \
+        --gid 42407 \
+        --uid 42407 \
+        --no-create-home \
+        --home /var/lib/cinder \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        cinder
+
+  cinder-consolidated:
+    after: [cinder-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - cinder-api
+      - cinder-scheduler
+      - cinder-volume
+      - ceph-common
+      - nfs-common
+      - sysfsutils
+      - tgt
+    override-prime: |
+      craftctl default
+      echo > $CRAFT_PRIME/etc/apache2/ports.conf
