@@ -1,0 +1,43 @@
+name: heat-engine
+summary: Openstack heat-engine
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack heat-engine
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  heat-engine:
+    override: replace
+    command: /usr/bin/heat-engine
+
+parts:
+  heat-user:
+    plugin: nil
+    # 42418:42418 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42418 --system heat
+      useradd \
+        --gid 42418 \
+        --uid 42418  \
+        --no-create-home \
+        --home /var/lib/heat \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        heat
+
+  heat-engine:
+    after: [heat-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - heat-engine

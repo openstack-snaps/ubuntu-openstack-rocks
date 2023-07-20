@@ -3,7 +3,7 @@ summary: Openstack {{ cookiecutter.rock_name }}
 license: Apache-2.0
 description: |
   Ubuntu distribution of OpenStack {{ cookiecutter.rock_name }}
-version: antelope
+version: 2023.1
 
 base: ubuntu:22.04
 platforms:

@@ -1,0 +1,43 @@
+name: heat-api-cfn
+summary: Openstack heat-api-cfn
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack heat-api-cfn
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  heat-api-cfn:
+    override: replace
+    command: /usr/bin/heat-api-cfn
+
+parts:
+  heat-user:
+    plugin: nil
+    # 42418:42418 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42418 --system heat
+      useradd \
+        --gid 42418 \
+        --uid 42418  \
+        --no-create-home \
+        --home /var/lib/heat \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        heat
+
+  heat-api-cfn:
+    after: [heat-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - heat-api-cfn
