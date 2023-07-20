@@ -1,6 +1,6 @@
-# {{ cookiecutter.rock_name }} ROCK
+# heat-api ROCK
 
-This is a ROCK OCI image for {{ cookiecutter.rock_name }}.
+This is a ROCK OCI image for heat-api.
 
 More information is coming.
 
@@ -17,7 +17,7 @@ it will help ensure that all layers of the image are imported
 into docker (this is just the top layer).
 
 ```bash
-> skopeo --insecure-policy copy oci-archive:{{ cookiecutter.rock_name }}_2023.1_amd64.rock docker-daemon:{{ cookiecutter.rock_name }}:2023.1
+> skopeo --insecure-policy copy oci-archive:heat-api_2023.1_amd64.rock docker-daemon:heat-api:2023.1
 ```
 
 If you are interested in giving it a go in Microk8s, you can
@@ -25,8 +25,8 @@ export the image from your docker registry and then into the
 microk8s registry:
 
 ```bash
-> docker save {{ cookiecutter.rock_name }}:2023.1 > ./{{ cookiecutter.rock_name }}_2023.1.tar
-> microk8s ctr image import ./{{ cookiecutter.rock_name }}_2023.1.tar
+> docker save heat-api:2023.1 > ./heat-api_2023.1.tar
+> microk8s ctr image import ./heat-api_2023.1.tar
 # Try with sunbeam
-> juju attach-resource {{ cookiecutter.rock_name }} {{ cookiecutter.rock_name }}-image={{ cookiecutter.rock_name }}:2023.1
+> juju attach-resource heat-k8s heat-api-image=heat-api:2023.1
 ```

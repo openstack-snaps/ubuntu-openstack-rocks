@@ -1,0 +1,40 @@
+name: heat-consolidated
+summary: Openstack heat-consolidated
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack Heat which can be used for all Heat services
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+parts:
+  heat-user:
+    plugin: nil
+    # 42418:42418 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42418 --system heat
+      useradd \
+        --gid 42418 \
+        --uid 42418  \
+        --no-create-home \
+        --home /var/lib/heat \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        heat
+
+  heat-consolidated:
+    after: [heat-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - heat-api
+      - heat-api-cfn
+      - heat-engine
