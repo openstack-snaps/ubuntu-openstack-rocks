@@ -1,0 +1,43 @@
+name: barbican-worker
+summary: Openstack barbican-worker
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack barbican-worker
+version: 2023.1
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  barbican-worker:
+    override: replace
+    command: barbican-worker
+
+parts:
+  barbican-user:
+    plugin: nil
+    # 42403:42403 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42403 --system barbican
+      useradd \
+        --gid 42403 \
+        --uid 42403 \
+        --no-create-home \
+        --home /var/lib/barbican \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        barbican
+
+  barbican-worker:
+    after: [barbican-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - barbican-worker
+      - python3-pymysql
