@@ -14,11 +14,6 @@ package-repositories:
     cloud: antelope
     priority: always
 
-services:
-  heat-api:
-    override: replace
-    command: /usr/bin/heat-api
-
 parts:
   heat-user:
     plugin: nil
@@ -41,3 +36,4 @@ parts:
     overlay-packages:
       - sudo
       - heat-api
+      - heat-api-cfn
