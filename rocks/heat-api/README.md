@@ -1,6 +1,6 @@
 # heat-api ROCK
 
-This is a ROCK OCI image for heat-api.
+This is a ROCK OCI image for heat-api and heat-api-cfn.
 
 More information is coming.
 
