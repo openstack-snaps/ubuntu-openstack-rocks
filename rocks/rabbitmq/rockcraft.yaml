@@ -1,11 +1,16 @@
 name: rabbitmq
 summary: RabbitMQ
 description: AMQP based message broker.
-version: 3.9.13
+version: 3.12.1
 base: ubuntu:22.04
 license: Apache-2.0
 platforms:
   amd64:
+
+package-repositories:
+  - type: apt
+    ppa: ubuntu-cloud-archive/rabbitmq-3.12-updates
+    priority: always
 
 services:
   rabbitmq:
