@@ -1,0 +1,39 @@
+name: ceilometer-consolidated
+summary: Openstack ceilometer-consolidated
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack ceilometer-consolidated
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+parts:
+  ceilometer-user:
+    plugin: nil
+    # 42405:42405 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42405 --system ceilometer
+      useradd \
+        --gid 42405 \
+        --uid 42405 \
+        --no-create-home \
+        --home /var/lib/ceilometer \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        ceilometer
+
+  ceilometer-consolidated:
+    after: [ceilometer-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - ceilometer-agent-central
+      - ceilometer-agent-notification
