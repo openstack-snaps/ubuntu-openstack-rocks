@@ -1,0 +1,43 @@
+name: ceilometer-central
+summary: Openstack ceilometer-central
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack ceilometer-central
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  ceilometer-central:
+    override: replace
+    command: ceilometer-polling --polling-namespaces central
+
+parts:
+  ceilometer-user:
+    plugin: nil
+    # 42405:42405 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42405 --system ceilometer
+      useradd \
+        --gid 42405 \
+        --uid 42405 \
+        --no-create-home \
+        --home /var/lib/ceilometer \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        ceilometer
+
+  ceilometer-central:
+    after: [ceilometer-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - ceilometer-agent-central
