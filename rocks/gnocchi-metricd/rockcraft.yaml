@@ -1,0 +1,44 @@
+name: gnocchi-metricd
+summary: Openstack gnocchi-metricd
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack gnocchi-metricd
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  gnocchi-metricd:
+    override: replace
+    command: gnocchi-metricd
+
+parts:
+  gnocchi-user:
+    plugin: nil
+    # 42416:42416 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42416 --system gnocchi
+      useradd \
+        --gid 42416 \
+        --uid 42416 \
+        --no-create-home \
+        --home /var/lib/gnocchi \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        gnocchi
+
+  gnocchi-metricd:
+    after: [gnocchi-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - gnocchi-metricd
+      - ceph-common
