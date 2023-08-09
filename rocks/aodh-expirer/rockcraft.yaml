@@ -1,0 +1,43 @@
+name: aodh-expirer
+summary: Openstack aodh-expirer
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack aodh-expirer
+version: 2023.1
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  aodh-expirer:
+    override: replace
+    command: aodh-expirer
+
+parts:
+  aodh-user:
+    plugin: nil
+    # 42402:42402 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42402 --system aodh
+      useradd \
+        --gid 42402 \
+        --uid 42402 \
+        --no-create-home \
+        --home /var/lib/aodh \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        aodh
+
+  aodh-expirer:
+    after: [aodh-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - aodh-expirer
