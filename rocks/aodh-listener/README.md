@@ -28,5 +28,5 @@ microk8s registry:
 > docker save aodh-listener:2023.1 > ./aodh-listener_2023.1.tar
 > microk8s ctr image import ./aodh-listener_2023.1.tar
 # Try with sunbeam
-> juju attach-resource aodh-listener aodh-listener-image=aodh-listener:2023.1
+> juju attach-resource aodh-k8s aodh-listener-image=aodh-listener:2023.1
 ```

@@ -28,5 +28,5 @@ microk8s registry:
 > docker save aodh-evaluator:2023.1 > ./aodh-evaluator_2023.1.tar
 > microk8s ctr image import ./aodh-evaluator_2023.1.tar
 # Try with sunbeam
-> juju attach-resource aodh-evaluator aodh-evaluator-image=aodh-evaluator:2023.1
+> juju attach-resource aodh-k8s aodh-evaluator-image=aodh-evaluator:2023.1
 ```

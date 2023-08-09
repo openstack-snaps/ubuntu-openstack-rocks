@@ -28,5 +28,5 @@ microk8s registry:
 > docker save aodh-api:2023.1 > ./aodh-api_2023.1.tar
 > microk8s ctr image import ./aodh-api_2023.1.tar
 # Try with sunbeam
-> juju attach-resource aodh-api aodh-api-image=aodh-api:2023.1
+> juju attach-resource aodh-k8s aodh-api-image=aodh-api:2023.1
 ```

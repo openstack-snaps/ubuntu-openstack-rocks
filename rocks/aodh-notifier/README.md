@@ -28,5 +28,5 @@ microk8s registry:
 > docker save aodh-notifier:2023.1 > ./aodh-notifier_2023.1.tar
 > microk8s ctr image import ./aodh-notifier_2023.1.tar
 # Try with sunbeam
-> juju attach-resource aodh-notifier aodh-notifier-image=aodh-notifier:2023.1
+> juju attach-resource aodh-k8s aodh-notifier-image=aodh-notifier:2023.1
 ```
