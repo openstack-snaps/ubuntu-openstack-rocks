@@ -1,0 +1,42 @@
+name: magnum-conductor
+summary: Openstack magnum-conductor
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack magnum-conductor
+version: "2023.1"
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  magnum-conductor:
+    override: replace
+    command: magnum-conductor
+
+parts:
+  magnum-user:
+    plugin: nil
+    # 42428:42428 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42428 --system magnum
+      useradd \
+        --gid 42428 \
+        --uid 42428 \
+        --no-create-home \
+        --home /var/lib/magnum \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        magnum
+
+  magnum-conductor:
+    after: [magnum-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - magnum-conductor
