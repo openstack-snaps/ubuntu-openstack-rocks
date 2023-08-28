@@ -45,3 +45,31 @@ parts:
     override-prime: |
       craftctl default
       echo > $CRAFT_PRIME/etc/apache2/ports.conf
+    
+  horizon-plugin:
+    plugin: dump
+    source: python/
+    organize:
+     plugin_management.py: usr/bin/plugin_management.py
+    override-prime: |
+      craftctl default
+      chmod 550 $CRAFT_PRIME/usr/bin/plugin_management.py
+
+  horizon-magnum-plugin:
+    after: [horizon]
+    plugin: nil
+    stage-packages:
+      - python3-magnum-ui
+    organize:
+      usr/lib/python3/dist-packages/openstack_dashboard/enabled/_1370_project_container_infra_panel_group.py: usr/lib/python3/dist-packages/openstack_dashboard/available/_1370_project_container_infra_panel_group.py
+      usr/lib/python3/dist-packages/openstack_dashboard/enabled/_1371_project_container_infra_clusters_panel.py: usr/lib/python3/dist-packages/openstack_dashboard/available/_1371_project_container_infra_clusters_panel.py
+      usr/lib/python3/dist-packages/openstack_dashboard/enabled/_1372_project_container_infra_cluster_templates_panel.py: usr/lib/python3/dist-packages/openstack_dashboard/available/_1372_project_container_infra_cluster_templates_panel.py
+      usr/lib/python3/dist-packages/openstack_dashboard/enabled/_2370_admin_container_infra_panel_group.py: usr/lib/python3/dist-packages/openstack_dashboard/available/_2370_admin_container_infra_panel_group.py
+      usr/lib/python3/dist-packages/openstack_dashboard/enabled/_2371_admin_container_infra_quotas_panel.py: usr/lib/python3/dist-packages/openstack_dashboard/available/_2371_admin_container_infra_quotas_panel.py
+    override-prime: |
+      craftctl default
+      echo "_1370_project_container_infra_panel_group.py
+      _1371_project_container_infra_clusters_panel.py
+      _1372_project_container_infra_cluster_templates_panel.py
+      _2370_admin_container_infra_panel_group.py
+      _2371_admin_container_infra_quotas_panel.py" > $CRAFT_PRIME/usr/lib/python3/dist-packages/openstack_dashboard/available/magnum
