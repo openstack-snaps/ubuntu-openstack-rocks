@@ -1,0 +1,43 @@
+name: designate-producer
+summary: Openstack designate-producer
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack designate-producer
+version: "2023.1"
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  designate-producer:
+    override: replace
+    command: designate-producer
+
+parts:
+  designate-user:
+    plugin: nil
+    # 42411:42411 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42411 --system designate
+      useradd \
+        --gid 42411 \
+        --uid 42411 \
+        --no-create-home \
+        --home /var/lib/designate \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        designate
+
+  designate-producer:
+    after: [designate-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - designate-producer

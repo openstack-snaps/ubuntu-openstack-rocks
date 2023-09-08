@@ -1,0 +1,44 @@
+name: designate-worker
+summary: Openstack designate-worker
+license: Apache-2.0
+description: |
+  Ubuntu distribution of OpenStack designate-worker
+version: "2023.1"
+
+base: ubuntu:22.04
+platforms:
+  amd64:
+
+package-repositories:
+  - type: apt
+    cloud: antelope
+    priority: always
+
+services:
+  designate-worker:
+    override: replace
+    command: designate-worker
+
+parts:
+  designate-user:
+    plugin: nil
+    # 42411:42411 for kolla compatibility
+    overlay-script: |
+      groupadd --root $CRAFT_OVERLAY --gid 42411 --system designate
+      useradd \
+        --gid 42411 \
+        --uid 42411 \
+        --no-create-home \
+        --home /var/lib/designate \
+        --root $CRAFT_OVERLAY \
+        --system \
+        --shell /bin/false \
+        designate
+
+  designate-worker:
+    after: [designate-user]
+    plugin: nil
+    overlay-packages:
+      - sudo
+      - bind9-utils
+      - designate-worker
